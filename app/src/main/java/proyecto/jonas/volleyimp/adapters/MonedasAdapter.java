@@ -5,11 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.R;
 import proyecto.jonas.volleyimp.models.Moneda;
+import proyecto.jonas.volleyimp.utils.Utils;
 
 public class MonedasAdapter extends BaseAdapter {
     private Context mContext;
@@ -51,12 +56,19 @@ public class MonedasAdapter extends BaseAdapter {
         TextView tvCompra = view.findViewById(R.id.tvCompra);
         TextView tvVenta = view.findViewById(R.id.tvVenta);
         TextView tvMonedaName = view.findViewById(R.id.tvMonedaName);
-
+        TextView tvUnidadMonetaria = view.findViewById(R.id.unidadMonetaria);
+        ImageView monedaImg = (ImageView) view.findViewById(R.id.imageView);
+        monedaImg.setImageResource(Utils.getMonedaImage(currentItem.getIdMoneda()) );
 
         tvMonedaName.setText(currentItem.getMonedaName());
         tvCompra.setText(currentItem.getCompraValue());
         tvVenta.setText(currentItem.getVentaValue());
+        tvUnidadMonetaria.setText(currentItem.getUnidadMonedaria());
 
         return view;
     }
+
+
+
+
 }

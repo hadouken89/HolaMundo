@@ -7,6 +7,8 @@ public class Moneda implements Parcelable {
     private String monedaName;
     private String compraValue;
     private String ventaValue;
+    private String unidadMonedaria;
+    private int idMoneda;
 
     public Moneda(String monedaName, String compraValue, String ventaValue) {
         this.monedaName = monedaName;
@@ -20,6 +22,8 @@ public class Moneda implements Parcelable {
         this.monedaName = in.readString();
         this.compraValue = in.readString();
         this.ventaValue = in.readString();
+        this.idMoneda = in.readInt();
+        this.unidadMonedaria = in.readString();
     }
 
     public String getMonedaName() {
@@ -46,6 +50,21 @@ public class Moneda implements Parcelable {
         this.ventaValue = ventaValue;
     }
 
+    public String getUnidadMonedaria() {
+        return unidadMonedaria;
+    }
+
+    public void setUnidadMonedaria(String unidadMonedaria) {
+        this.unidadMonedaria = unidadMonedaria;
+    }
+
+    public int getIdMoneda() {
+        return idMoneda;
+    }
+
+    public void setIdMoneda(int idMoneda) {
+        this.idMoneda = idMoneda;
+    }
 
     @Override
     public int describeContents() {
@@ -57,6 +76,8 @@ public class Moneda implements Parcelable {
         dest.writeString(this.monedaName);
         dest.writeString(this.compraValue);
         dest.writeString(this.ventaValue);
+        dest.writeString(this.unidadMonedaria);
+        dest.writeInt(this.idMoneda);
     }
 
     public static final Creator<Moneda> CREATOR = new Creator<Moneda>() {

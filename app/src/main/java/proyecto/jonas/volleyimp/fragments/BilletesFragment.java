@@ -1,8 +1,6 @@
 package proyecto.jonas.volleyimp.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,7 @@ import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.R;
 import proyecto.jonas.volleyimp.adapters.MonedasAdapter;
-import proyecto.jonas.volleyimp.services.DivisasService;
+import proyecto.jonas.volleyimp.services.BilletesService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
 import proyecto.jonas.volleyimp.services.InfoDolarService;
 
@@ -37,14 +35,14 @@ public class BilletesFragment extends Fragment {
 
     private void initProperties(View view) {
         lvBilletes = view.findViewById(R.id.lvBilletes);
-        button = view.findViewById(R.id.button);
+    //    button = view.findViewById(R.id.button);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showInfoDolar();
-            }
-        });
+    //  button.setOnClickListener(new View.OnClickListener() {
+    //       @Override
+    //       public void onClick(View v) {
+    //           showInfoDolar();
+    //       }
+    //   });
 
 
         mView = view;
@@ -69,7 +67,7 @@ public class BilletesFragment extends Fragment {
     }
 
    private void showDivisas() {
-       DivisasService htmlDecode = new DivisasService(mView.getContext(), new IVolleyCallback() {
+       BilletesService htmlDecode = new BilletesService(mView.getContext(), new IVolleyCallback() {
            @Override
            public void onSuccess(HashMap jsonString) {
                showListViewParams(jsonString);

@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.R;
 import proyecto.jonas.volleyimp.adapters.MonedasAdapter;
-import proyecto.jonas.volleyimp.services.DivisasService;
+import proyecto.jonas.volleyimp.services.CotizacionService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
 
 public class CotizacionFragment extends Fragment {
@@ -41,7 +41,7 @@ public class CotizacionFragment extends Fragment {
     }
 
     private void showDivisas() {
-        DivisasService htmlDecode = new DivisasService(view.getContext(), new IVolleyCallback() {
+        CotizacionService cotizacionService = new CotizacionService(view.getContext(), new IVolleyCallback() {
             @Override
             public void onSuccess(HashMap jsonString) {
                 showListViewParams(jsonString);
@@ -52,7 +52,7 @@ public class CotizacionFragment extends Fragment {
                 String holis = "";
             }
         });
-        htmlDecode.callRequestData();
+        cotizacionService.callRequestData();
     }
 
     private void showListViewParams(HashMap hmParams) {

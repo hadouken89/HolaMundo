@@ -12,12 +12,13 @@ import org.jsoup.select.Elements;
 import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.models.Moneda;
+import proyecto.jonas.volleyimp.utils.Utils;
 
-public class DivisasService extends VolleyImp {
+public class CotizacionService extends VolleyImp {
 
     private final static String URL = "http://www.bna.com.ar/Cotizador/MonedasHistorico";
 
-    public DivisasService(Context context, IVolleyCallback _responseEvent) {
+    public CotizacionService(Context context, IVolleyCallback _responseEvent) {
         super(context, _responseEvent);
     }
 
@@ -47,8 +48,7 @@ public class DivisasService extends VolleyImp {
             Elements rows = document.getElementsByTag("tbody").get(0).getElementsByTag("tr");
 
             for(Element row: rows){
-
-                String monedaName = row.getElementsByTag("td").get(0).text();
+                String monedaName = row.getElementsByTag("td").get(0).text().replace("(*)","").trim();
                 String compraValue = row.getElementsByTag("td").get(1).text();
                 String ventaValue = row.getElementsByTag("td").get(2).text();
 
@@ -56,6 +56,8 @@ public class DivisasService extends VolleyImp {
                 moneda.setMonedaName(monedaName);
                 moneda.setCompraValue(compraValue);
                 moneda.setVentaValue(ventaValue);
+                moneda.setIdMoneda(Utils.getMonedaId(monedaName));
+                moneda.setUnidadMonedaria(Utils.getMonedaUM(moneda.getIdMoneda()));
 
                 hmCotizacionDivisas.put(monedaName,moneda);
             }
