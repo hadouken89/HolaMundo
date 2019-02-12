@@ -8,12 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.R;
 import proyecto.jonas.volleyimp.models.Moneda;
+import proyecto.jonas.volleyimp.utils.MonedasConverterUtils;
 import proyecto.jonas.volleyimp.utils.Utils;
 
 public class MonedasAdapter extends BaseAdapter {
@@ -46,28 +45,29 @@ public class MonedasAdapter extends BaseAdapter {
         Moneda currentItem = (Moneda) this.getItem( position );
 
         if(view == null){
-            view =((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.moneda_container,null);
+            view =((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.moneda_container2,null);
         }
         else{
             LayoutInflater layoutInflater = LayoutInflater.from( this.mContext );
-            view = layoutInflater.inflate( R.layout.moneda_container,null );
+            view = layoutInflater.inflate( R.layout.moneda_container2,null );
         }
 
         TextView tvCompra = view.findViewById(R.id.tvCompra);
         TextView tvVenta = view.findViewById(R.id.tvVenta);
         TextView tvMonedaName = view.findViewById(R.id.tvMonedaName);
         TextView tvUnidadMonetaria = view.findViewById(R.id.unidadMonetaria);
+     //   TextView tvSpread = view.findViewById(R.id.tvSpread);
         ImageView monedaImg = (ImageView) view.findViewById(R.id.imageView);
         monedaImg.setImageResource(Utils.getMonedaImage(currentItem.getIdMoneda()) );
 
         tvMonedaName.setText(currentItem.getMonedaName());
         tvCompra.setText(currentItem.getCompraValue());
         tvVenta.setText(currentItem.getVentaValue());
+//        tvSpread.setText(MonedasConverterUtils.calculateCurrencySpread(currentItem.getCompraValue(),currentItem.getVentaValue()));
         tvUnidadMonetaria.setText(currentItem.getUnidadMonedaria());
 
         return view;
     }
-
 
 
 
