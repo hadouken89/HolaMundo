@@ -14,44 +14,34 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="276dp" />
 
         <TextView
             android:id="@+id/tvVenta"
             android:layout_width="99dp"
             android:layout_height="23dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="start"
             android:text="38,1234123412"
             android:textAlignment="gravity"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline10"
-            app:layout_constraintHorizontal_bias="0.761"
-            app:layout_constraintStart_toStartOf="@+id/guideline5" />
+            app:layout_constraintStart_toEndOf="@+id/tvCompra"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:gravity="left"
             android:text="Compra"
             android:textAlignment="gravity"
             android:textColor="@color/colorTitleCompra"
             android:textStyle="bold|normal"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
@@ -59,8 +49,7 @@
             android:id="@+id/textView3"
             android:layout_width="80dp"
             android:layout_height="19dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="24dp"
             android:layout_weight="1"
             android:gravity="left"
             android:text="Venta"
@@ -68,9 +57,7 @@
             android:textColor="@color/colorTitleVenta"
             android:textStyle="bold|normal"
             app:layout_constraintBottom_toTopOf="@+id/tvVenta"
-            app:layout_constraintEnd_toStartOf="@+id/guideline10"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/guideline7"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -78,31 +65,29 @@
             android:id="@+id/tvCompra"
             android:layout_width="80dp"
             android:layout_height="23dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:gravity="left"
             android:text="36,20"
             android:textAlignment="gravity"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/textView4"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tvMonedaName"
-            android:layout_width="206dp"
+            android:layout_width="184dp"
             android:layout_height="28dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="28dp"
             android:layout_marginBottom="8dp"
             android:gravity="right|left"
-            android:text="Dolar USA"
+            android:text="Dolares Canadienses"
             android:textAlignment="gravity"
             android:textSize="18sp"
             android:textStyle="bold|normal"
             app:layout_constraintBottom_toTopOf="@+id/guideline7"
-            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toEndOf="@+id/unidadMonetaria"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -110,10 +95,7 @@
             android:id="@+id/unidadMonetaria"
             android:layout_width="37dp"
             android:layout_height="23dp"
-            android:layout_marginEnd="8dp"
             android:text="USD"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,13 +106,6 @@
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/dolar_usa" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="96dp" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline7"
@@ -146,46 +121,43 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="7dp" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="224dp" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/layout_border"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline6"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline10"
-            app:layout_constraintTop_toTopOf="@+id/guideline7"
-            app:layout_constraintVertical_bias="0.142"
-            app:srcCompat="@drawable/calculadora_img"
-            tools:ignore="VectorDrawableCompat" />
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintAlertaButton"
+            android:layout_width="80dp"
+            android:layout_height="53dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="1dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/layout_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toTopOf="@+id/guideline7"
-            app:layout_constraintVertical_bias="0.142"
-            app:srcCompat="@drawable/alerta_img"
-            tools:ignore="VectorDrawableCompat" />
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976">
+
+            <ImageButton
+                android:id="@+id/buttonAlerta"
+                android:layout_width="75dp"
+                android:layout_height="28dp"
+                android:background="@drawable/layout_border"
+                app:srcCompat="@drawable/alerta_img"
+                tools:ignore="MissingConstraints,VectorDrawableCompat"
+                tools:layout_editor_absoluteX="3dp" />
+
+            <TextView
+                android:id="@+id/tvCrearAlerta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Crear alerta"
+                android:textColor="#00B0FF"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </android.support.constraint.ConstraintLayout>
 
         <!--
         <ImageView
