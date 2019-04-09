@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,26 +13,27 @@ import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.R;
 import proyecto.jonas.volleyimp.models.Moneda;
-import proyecto.jonas.volleyimp.utils.MonedasConverterUtils;
 import proyecto.jonas.volleyimp.utils.Utils;
 
 public class MonedasAdapter extends BaseAdapter {
     private Context mContext;
-    private HashMap mHmResponse;
+    private HashMap hmMonedas;
+    private OnItemClickListener mOnItemClickListener;
 
-    public MonedasAdapter(Context mContext, HashMap mHmResponse) {
+
+    public MonedasAdapter(Context mContext, HashMap hmMonedas) {
         this.mContext = mContext;
-        this.mHmResponse = mHmResponse;
+        this.hmMonedas = hmMonedas;
     }
 
     @Override
     public int getCount() {
-        return mHmResponse.size();
+        return hmMonedas.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mHmResponse.get(mHmResponse.keySet().toArray()[position]);
+        return hmMonedas.get(hmMonedas.keySet().toArray()[position]);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class MonedasAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         Moneda currentItem = (Moneda) this.getItem( position );
+        final int mPosition = position;
 
         if(view == null){
             view =((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.moneda_container2,null);
@@ -56,19 +59,32 @@ public class MonedasAdapter extends BaseAdapter {
         TextView tvVenta = view.findViewById(R.id.tvVenta);
         TextView tvMonedaName = view.findViewById(R.id.tvMonedaName);
         TextView tvUnidadMonetaria = view.findViewById(R.id.unidadMonetaria);
-     //   TextView tvSpread = view.findViewById(R.id.tvSpread);
         ImageView monedaImg = (ImageView) view.findViewById(R.id.imageView);
+        ImageButton buttonAlerta  = view.findViewById(R.id.buttonAlerta);
         monedaImg.setImageResource(Utils.getMonedaImage(currentItem.getIdMoneda()) );
 
         tvMonedaName.setText(currentItem.getMonedaName());
         tvCompra.setText(currentItem.getCompraValue());
         tvVenta.setText(currentItem.getVentaValue());
-//        tvSpread.setText(MonedasConverterUtils.calculateCurrencySpread(currentItem.getCompraValue(),currentItem.getVentaValue()));
         tvUnidadMonetaria.setText(currentItem.getUnidadMonedaria());
 
+        buttonAlerta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick((Moneda) hmMonedas.get(hmMonedas.keySet().toArray()[mPosition]));
+                }
+            }
+        });
         return view;
     }
 
+    public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
 
+    public interface OnItemClickListener {
+        void onItemClick(Moneda moneda);
+    }
 
 }

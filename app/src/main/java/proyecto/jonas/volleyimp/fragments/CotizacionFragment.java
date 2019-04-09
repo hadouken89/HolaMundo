@@ -1,5 +1,6 @@
 package proyecto.jonas.volleyimp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,7 +11,10 @@ import android.widget.ListView;
 import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.R;
+import proyecto.jonas.volleyimp.activities.MonedaNotification;
 import proyecto.jonas.volleyimp.adapters.MonedasAdapter;
+import proyecto.jonas.volleyimp.constants.MonedasConstant;
+import proyecto.jonas.volleyimp.models.Moneda;
 import proyecto.jonas.volleyimp.services.CotizacionService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
 
@@ -57,6 +61,14 @@ public class CotizacionFragment extends Fragment {
 
     private void showListViewParams(HashMap hmParams) {
         MonedasAdapter monedasAdapter = new MonedasAdapter(view.getContext(),hmParams);
+        monedasAdapter.setmOnItemClickListener(new MonedasAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Moneda moneda) {
+                Intent intent = new Intent( getContext()  , MonedaNotification.class);
+                intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
+                startActivity(intent);
+            }
+        });
         lvCotizaciones.setAdapter(monedasAdapter);
     }
 

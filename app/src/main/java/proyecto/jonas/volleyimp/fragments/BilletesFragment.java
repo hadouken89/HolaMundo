@@ -83,6 +83,14 @@ public class BilletesFragment extends Fragment {
 
    private void showListViewParams(HashMap hmParams) {
        MonedasAdapter monedasAdapter = new MonedasAdapter(mView.getContext(),hmParams);
+       monedasAdapter.setmOnItemClickListener(new MonedasAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(Moneda moneda) {
+               Intent intent = new Intent( getContext(), MonedaNotification.class);
+               intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
+               startActivity(intent);
+           }
+       });
        lvBilletes.setAdapter(monedasAdapter);
 
    }
