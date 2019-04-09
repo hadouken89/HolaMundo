@@ -53,7 +53,7 @@ public class BilletesService extends VolleyImp {
 
             for(Element row: rows){
 
-                String monedaName = row.getElementsByTag("td").get(0).text().replace("(*)","").trim();
+                String monedaName = row.getElementsByTag("td").get(0).text().replace("*","").trim();
                 String compraValue = row.getElementsByTag("td").get(1).text();
                 String ventaValue = row.getElementsByTag("td").get(2).text();
 
@@ -73,6 +73,7 @@ public class BilletesService extends VolleyImp {
         }
 
         return hmMonedas;
+
     }
 
     private String getStringTable(String htmlString,String idParam) {
