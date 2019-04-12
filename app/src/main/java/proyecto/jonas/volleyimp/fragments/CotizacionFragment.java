@@ -17,6 +17,7 @@ import proyecto.jonas.volleyimp.constants.MonedasConstant;
 import proyecto.jonas.volleyimp.models.Moneda;
 import proyecto.jonas.volleyimp.services.CotizacionService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
+import proyecto.jonas.volleyimp.services.NotificationMonedaService;
 
 public class CotizacionFragment extends Fragment {
 
@@ -64,9 +65,16 @@ public class CotizacionFragment extends Fragment {
         monedasAdapter.setmOnItemClickListener(new MonedasAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Moneda moneda) {
-                Intent intent = new Intent( getContext()  , MonedaNotification.class);
-                intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
-                startActivity(intent);
+
+                Intent intent = new Intent(getContext(), NotificationMonedaService.class);
+                intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
+
+                getContext().startService(intent);
+
+
+             //   Intent intent = new Intent( getContext()  , MonedaNotification.class);
+             //   intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
+             //   startActivity(intent);
             }
         });
         lvCotizaciones.setAdapter(monedasAdapter);

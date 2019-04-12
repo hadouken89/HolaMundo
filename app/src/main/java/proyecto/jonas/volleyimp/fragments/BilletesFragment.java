@@ -22,6 +22,7 @@ import proyecto.jonas.volleyimp.models.Moneda;
 import proyecto.jonas.volleyimp.services.BilletesService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
 import proyecto.jonas.volleyimp.services.InfoDolarService;
+import proyecto.jonas.volleyimp.services.NotificationMonedaService;
 
 public class BilletesFragment extends Fragment {
 
@@ -65,7 +66,7 @@ public class BilletesFragment extends Fragment {
   // }
 
    private void showDivisas() {
-       BilletesService htmlDecode = new BilletesService(mView.getContext(), new IVolleyCallback() {
+       BilletesService billetesService = new BilletesService(mView.getContext(), new IVolleyCallback() {
            @Override
            public void onSuccess(HashMap hmResponse) {
                mHmMonedas = hmResponse;
@@ -78,7 +79,7 @@ public class BilletesFragment extends Fragment {
                String holis = "";
            }
        });
-       htmlDecode.callRequestData();
+       billetesService.callRequestData();
    }
 
    private void showListViewParams(HashMap hmParams) {
@@ -86,9 +87,17 @@ public class BilletesFragment extends Fragment {
        monedasAdapter.setmOnItemClickListener(new MonedasAdapter.OnItemClickListener() {
            @Override
            public void onItemClick(Moneda moneda) {
-               Intent intent = new Intent( getContext(), MonedaNotification.class);
-               intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
-               startActivity(intent);
+
+               Intent intent = new Intent(getContext(), NotificationMonedaService.class);
+               intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
+
+               getContext().startService(intent);
+
+
+
+              //Intent intent = new Intent( getContext(), MonedaNotification.class);
+              //intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
+              //startActivity(intent);
            }
        });
        lvBilletes.setAdapter(monedasAdapter);
@@ -99,10 +108,10 @@ public class BilletesFragment extends Fragment {
        lvBilletes.setOnItemClickListener(new OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               Moneda monedaItem = (Moneda) mHmMonedas.get(mHmMonedas.keySet().toArray()[position]);
-               Intent myIntent = new Intent(getActivity(), MonedaNotification.class);
-               myIntent.putExtra(MonedasConstant.ITEM_MONEDA, monedaItem);
-               startActivity(myIntent);
+              Moneda monedaItem = (Moneda) mHmMonedas.get(mHmMonedas.keySet().toArray()[position]);
+              Intent myIntent = new Intent(getActivity(), MonedaNotification.class);
+              myIntent.putExtra(MonedasConstant.ITEM_MONEDA, monedaItem);
+              startActivity(myIntent);
            }
        });
    }
