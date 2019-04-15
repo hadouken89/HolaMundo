@@ -22,6 +22,7 @@ import proyecto.jonas.volleyimp.models.Moneda;
 import proyecto.jonas.volleyimp.services.BilletesService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
 import proyecto.jonas.volleyimp.services.InfoDolarService;
+import proyecto.jonas.volleyimp.services.NotificacionesService;
 import proyecto.jonas.volleyimp.services.NotificationMonedaService;
 
 public class BilletesFragment extends Fragment {
@@ -88,12 +89,14 @@ public class BilletesFragment extends Fragment {
            @Override
            public void onItemClick(Moneda moneda) {
 
-               Intent intent = new Intent(getContext(), NotificationMonedaService.class);
-               intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
+             // Intent intent = new Intent(getContext(), NotificationMonedaService.class);
+             // intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
 
-               getContext().startService(intent);
+             // getContext().startService(intent);
 
 
+               Intent intent = new Intent(getContext(), NotificacionesService.class);
+             getContext().startService(intent);
 
               //Intent intent = new Intent( getContext(), MonedaNotification.class);
               //intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
