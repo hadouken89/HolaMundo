@@ -1,9 +1,12 @@
 package proyecto.jonas.volleyimp.fragments;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +31,9 @@ import proyecto.jonas.volleyimp.services.NotificationMonedaService;
 public class BilletesFragment extends Fragment {
 
     private ListView lvBilletes;
-    private Button button;
     private View mView;
     private HashMap mHmMonedas;
+    private Intent mIntent;
 
     public BilletesFragment() { }
 
@@ -77,6 +80,7 @@ public class BilletesFragment extends Fragment {
 
            @Override
            public void onFailure(Exception e) {
+               Log.d("dolar-app", "BilletesFragment showDivisas OnFailure calling billetesService.class");
                String holis = "";
            }
        });
@@ -88,24 +92,29 @@ public class BilletesFragment extends Fragment {
        monedasAdapter.setmOnItemClickListener(new MonedasAdapter.OnItemClickListener() {
            @Override
            public void onItemClick(Moneda moneda) {
+               mIntent = new Intent(getContext(), NotificacionesService.class);
 
-             // Intent intent = new Intent(getContext(), NotificationMonedaService.class);
-             // intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
-
-             // getContext().startService(intent);
-
-
-               Intent intent = new Intent(getContext(), NotificacionesService.class);
-             getContext().startService(intent);
-
-              //Intent intent = new Intent( getContext(), MonedaNotification.class);
-              //intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
-              //startActivity(intent);
+               if(!isMyServiceRunning(NotificacionesService.class)){
+                   mIntent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
+                   getContext().startService(mIntent);
+               }
            }
        });
        lvBilletes.setAdapter(monedasAdapter);
 
    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.d ("dolar-app", true+" isMyServiceRunning?");
+                return true;
+            }
+        }
+        Log.i ("dolar-app", false+" isMyServiceRunning?");
+        return false;
+    }
 
    private void setMonedaNotificationListener(){
        lvBilletes.setOnItemClickListener(new OnItemClickListener() {
@@ -119,4 +128,10 @@ public class BilletesFragment extends Fragment {
        });
    }
 
+    @Override
+    public void onDestroy() {
+        getContext().stopService(mIntent);
+        Log.d("dolar-app", "BilletesFragment call OnDestroy and stop NotificacionesService.class");
+        super.onDestroy();
+    }
 }

@@ -32,6 +32,11 @@
         </activity>
         <service android:name=".services.NotificationMonedaService"/>
         <service android:name=".services.NotificacionesService"/>
+        <receiver android:name=".broadcast.BroadcastServiceReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+        </receiver>
     </application>
 
 </manifest>
