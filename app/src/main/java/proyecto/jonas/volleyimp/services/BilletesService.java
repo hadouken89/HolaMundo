@@ -36,7 +36,6 @@ public class BilletesService extends VolleyImp {
     @Override
     protected HashMap parseResponseData(String jsonString) {
         return getHmMonedas(jsonString);
-       // return convertHashmapToJsonString(responseToObject(jsonString));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package proyecto.jonas.volleyimp.constants;
 
 public class MonedasConstant {
+    public static final String MONEDA_LIST = "monedaList";
     public static final String ITEM_MONEDA = "itemMoneda";
     public static final String DOLAR_MONEDA = "Dolar U.S.A";
     public static final String LIBRA_ESTERLINA_MONEDA = "Libra Esterlina";

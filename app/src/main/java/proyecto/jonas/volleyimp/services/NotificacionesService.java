@@ -2,16 +2,20 @@ package proyecto.jonas.volleyimp.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import proyecto.jonas.volleyimp.broadcast.BroadcastServiceReceiver;
 import proyecto.jonas.volleyimp.constants.MonedasConstant;
 import proyecto.jonas.volleyimp.models.Moneda;
+import proyecto.jonas.volleyimp.utils.Utils;
 
 
 public class NotificacionesService extends Service {
@@ -22,25 +26,26 @@ public class NotificacionesService extends Service {
     private String monedaName;
     private String compraValue;
     private String ventaValue;
+    private ArrayList<Moneda> monedaList = new ArrayList<Moneda>();
+    private HashMap<String, Moneda> hmMonedas = new HashMap<>();
+    private  Bundle bundle = new Bundle();
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     private void startTimer() {
-        mTimer = new Timer();
-        mTimer.schedule(timerTask, 2000,7000);
+        if(mTimer == null){
+            mTimer = new Timer();
+            mTimer.schedule(timerTask, 2000,7000);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        Log.d("dolar-app", "onStartCommand "+ monedaList.toString());
         initProperties(intent);
         startTimer();
         return START_STICKY;
@@ -72,7 +77,6 @@ public class NotificacionesService extends Service {
                 toastTest();
                 mHmMonedas = hmResponse;
                 Moneda monedaNameService = (Moneda) mHmMonedas.get(monedaName);
-                //checkMonedaCotizacion(monedaNameService);
             }
 
             @Override
@@ -85,21 +89,21 @@ public class NotificacionesService extends Service {
     }
 
     private void initProperties(Intent intent) {
-        monedaItem = (Moneda) intent.getExtras().get(MonedasConstant.ITEM_MONEDA);
-        monedaName = monedaItem.getMonedaName();
-        compraValue = monedaItem.getCompraValue();
-        ventaValue = monedaItem.getVentaValue();
+            hmMonedas =(HashMap<String, Moneda>) intent.getSerializableExtra(MonedasConstant.MONEDA_LIST);
     }
 
     @Override
     public void onDestroy() {
         try{
-
             Log.d("dolar-app", "Notificacionesservice.class call ondestroy!");
-            Intent broadcastIntent = new Intent(this, BroadcastServiceReceiver.class);
-            broadcastIntent.putExtra(MonedasConstant.ITEM_MONEDA, monedaItem);
-            sendBroadcast(broadcastIntent);
-            stoptimertask();
+       // si la app no se esta ejecutando en primer plano
+           Intent broadcastIntent =  new Intent(getApplicationContext(), BroadcastServiceReceiver.class);
+           broadcastIntent.putExtra("holis", "holis");
+           broadcastIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedas);
+
+           sendBroadcast(broadcastIntent);
+
+           stoptimertask();
 
         }catch (Exception e){
             Log.d("dolar-app", "Notificacionesservice.class onDestroy error ", e);

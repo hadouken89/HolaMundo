@@ -22,7 +22,7 @@ public class Moneda implements Parcelable {
         this.monedaName = in.readString();
         this.compraValue = in.readString();
         this.ventaValue = in.readString();
-        this.idMoneda = in.readInt();
+       // this.idMoneda = in.readInt();
         this.unidadMonedaria = in.readString();
     }
 
@@ -77,7 +77,7 @@ public class Moneda implements Parcelable {
         dest.writeString(this.compraValue);
         dest.writeString(this.ventaValue);
         dest.writeString(this.unidadMonedaria);
-        dest.writeInt(this.idMoneda);
+      //  dest.writeInt(this.idMoneda);
     }
 
     public static final Creator<Moneda> CREATOR = new Creator<Moneda>() {
