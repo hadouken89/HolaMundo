@@ -14,13 +14,13 @@ import java.util.TimerTask;
 import proyecto.jonas.volleyimp.broadcast.BroadcastServiceReceiver;
 import proyecto.jonas.volleyimp.constants.MonedasConstant;
 import proyecto.jonas.volleyimp.models.Moneda;
-import proyecto.jonas.volleyimp.utils.Utils;
+import proyecto.jonas.volleyimp.utils.UtilNotification;
 
 
 public class NotificacionesService extends Service {
 
     private Timer mTimer;
-    private String ventaValue;
+    private HashMap mHmMonedaResponse;
     private ArrayList<Moneda> monedaList = new ArrayList<Moneda>();
     private HashMap<String, Moneda> hmMonedas = new HashMap<>();
 
@@ -66,8 +66,26 @@ public class NotificacionesService extends Service {
             @Override
             public void onSuccess(HashMap hmResponse) {
                 toastTest();
-                mHmMonedas = hmResponse;
-                Moneda monedaNameService = (Moneda) mHmMonedas.get(monedaName);
+                mHmMonedaResponse = hmResponse;
+
+                for(String monedaName: hmMonedas.keySet()){
+                    Moneda monedaResponse = (Moneda) mHmMonedaResponse.get(monedaName);
+                    Moneda monedaObserver = hmMonedas.get(monedaName);
+                    if(monedaResponse != null && monedaObserver != null){
+
+                        String compraValueMonedaOberver = monedaObserver.getCompraValue();
+                        String compraValueMonedaResponse = monedaResponse.getCompraValue();
+
+                        if(!compraValueMonedaOberver.equals(compraValueMonedaResponse)){
+                            //TODO: DO SOMETHING
+                            Log.d("dolar-app","TIRO UNA NOTIFICACION CAMBIO EL VALOR DE LA MONEDA "+ monedaResponse.getMonedaName() + "compra: " + monedaResponse.getCompraValue() );
+                            UtilNotification.sendNotification(getApplicationContext(), "DOLAR APP", "La cotizacion del" + monedaObserver.getMonedaName() +  "!");
+
+                        }
+                        UtilNotification.openAppOnNotificationClick(getApplicationContext(), "DOLAR APP", "NO HAY CAMBIOS");
+                        //UtilNotification.sendNotification(getApplicationContext(), "DOLAR APP", "La cotizacion sigue igual  !");
+                    }
+                }
             }
 
             @Override
