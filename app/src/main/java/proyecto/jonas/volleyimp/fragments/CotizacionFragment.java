@@ -70,11 +70,6 @@ public class CotizacionFragment extends Fragment {
                 intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
 
                 getContext().startService(intent);
-
-
-             //   Intent intent = new Intent( getContext()  , MonedaNotification.class);
-             //   intent.putExtra(MonedasConstant.ITEM_MONEDA, moneda );
-             //   startActivity(intent);
             }
         });
         lvCotizaciones.setAdapter(monedasAdapter);

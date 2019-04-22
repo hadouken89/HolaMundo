@@ -95,7 +95,6 @@ public class BilletesFragment extends Fragment {
        //          getContext().stopService(mIntent);
        //       }
                hmMonedas.put(moneda.getMonedaName(), moneda);
-               myIntent.putExtra(MonedasConstant.ITEM_MONEDA, moneda);
                myIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedas);
 
                getContext().startService(myIntent);

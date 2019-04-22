@@ -8,7 +8,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,14 +20,9 @@ import proyecto.jonas.volleyimp.utils.Utils;
 public class NotificacionesService extends Service {
 
     private Timer mTimer;
-    private HashMap mHmMonedas;
-    private Moneda monedaItem;
-    private String monedaName;
-    private String compraValue;
     private String ventaValue;
     private ArrayList<Moneda> monedaList = new ArrayList<Moneda>();
     private HashMap<String, Moneda> hmMonedas = new HashMap<>();
-    private  Bundle bundle = new Bundle();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -38,7 +32,7 @@ public class NotificacionesService extends Service {
     private void startTimer() {
         if(mTimer == null){
             mTimer = new Timer();
-            mTimer.schedule(timerTask, 2000,7000);
+            mTimer.schedule(timerTask, 2000,15000);
         }
     }
 
@@ -63,11 +57,8 @@ public class NotificacionesService extends Service {
     }
 
     private void notifyServiceActions() {
-      //  toastTest();
         //TODO: VERIFICAR SI SE ESTA LLAMANDO DESDE BILLETES O COTIZACION AL SERVICIO
         runService();
-
-
     }
 
     private void runService() {
@@ -118,6 +109,5 @@ public class NotificacionesService extends Service {
             mTimer = null;
         }
     }
-
 
 }
