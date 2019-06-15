@@ -10,6 +10,7 @@ import proyecto.jonas.volleyimp.adapters.MyPageAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,17 +18,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initProperties();
+        initPageAdapter();
+        initListeners();
     }
 
     private void initProperties() {
         tabLayout = findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Billetes"));
-        tabLayout.addTab(tabLayout.newTab().setText("Divisas"));
+        viewPager = findViewById(R.id.viewPager);
+    }
 
-        final ViewPager viewPager = findViewById(R.id.viewPager);
+    private void initPageAdapter() {
+        addTabsLayout();
         MyPageAdapter pageAdapter = new MyPageAdapter(getSupportFragmentManager() , tabLayout.getTabCount());
-
         viewPager.setAdapter(pageAdapter);
+    }
+
+    private void addTabsLayout() {
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.BILLETES)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.DIVISAS)));
+    }
+
+    private void initListeners() {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -44,5 +55,4 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab){}
         });
     }
-
 }
