@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import proyecto.jonas.volleyimp.models.Moneda;
 import proyecto.jonas.volleyimp.utils.Utils;
+import proyecto.jonas.volleyimp.utils.UtilsParseCotizacion;
 
 public class CotizacionService extends VolleyImp {
 
@@ -41,26 +42,8 @@ public class CotizacionService extends VolleyImp {
         HashMap hmCotizacionDivisas = new HashMap();
 
         try{
-            // Elements innerTable = Jsoup.parse(htmlString).getElementsByTag("tbody");
-            // Elements rows = innerTable.select("tr");
-
-            Document document = Jsoup.parse(htmlString);
-            Elements rows = document.getElementsByTag("tbody").get(0).getElementsByTag("tr");
-
-            for(Element row: rows){
-                String monedaName = row.getElementsByTag("td").get(0).text().replace("(*)","").trim();
-                String compraValue = row.getElementsByTag("td").get(1).text();
-                String ventaValue = row.getElementsByTag("td").get(2).text();
-
-                Moneda moneda = new Moneda();
-                moneda.setMonedaName(monedaName);
-                moneda.setCompraValue(compraValue);
-                moneda.setVentaValue(ventaValue);
-                moneda.setIdMoneda(Utils.getMonedaId(monedaName));
-                moneda.setUnidadMonedaria(Utils.getMonedaUM(moneda.getIdMoneda()));
-
-                hmCotizacionDivisas.put(monedaName,moneda);
-            }
+            UtilsParseCotizacion utilsParseCotizacion = new UtilsParseCotizacion(htmlString);
+            hmCotizacionDivisas = utilsParseCotizacion.getCotizacionList();
 
         }catch (Exception e){
             String holis = "";
