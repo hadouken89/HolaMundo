@@ -4,15 +4,8 @@ import android.content.Context;
 
 import com.android.volley.Request;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.HashMap;
 
-import proyecto.jonas.volleyimp.models.Moneda;
-import proyecto.jonas.volleyimp.utils.Utils;
 import proyecto.jonas.volleyimp.utils.UtilsParseCotizacion;
 
 public class CotizacionService extends VolleyImp {
@@ -39,17 +32,11 @@ public class CotizacionService extends VolleyImp {
 
     @Override
     protected HashMap parseResponseData(String htmlString) {
-        HashMap hmCotizacionDivisas = new HashMap();
+        return getHmCotizacion(htmlString);
+    }
 
-        try{
-            UtilsParseCotizacion utilsParseCotizacion = new UtilsParseCotizacion(htmlString);
-            hmCotizacionDivisas = utilsParseCotizacion.getCotizacionList();
-
-        }catch (Exception e){
-            String holis = "";
-            //TODO
-        }
-
-        return hmCotizacionDivisas;
+    private HashMap getHmCotizacion(String htmlString) {
+        UtilsParseCotizacion utilsParseCotizacion = new UtilsParseCotizacion(htmlString);
+        return utilsParseCotizacion.getCotizacion();
     }
 }

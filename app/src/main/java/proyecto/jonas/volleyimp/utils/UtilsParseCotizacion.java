@@ -18,7 +18,7 @@ public class UtilsParseCotizacion {
         this.htmlString = htmlString;
     }
 
-    public HashMap getCotizacionList(){
+    public HashMap getCotizacion(){
         Elements rows = getRowElements();
         return getCotizacionHm(rows);
     }
