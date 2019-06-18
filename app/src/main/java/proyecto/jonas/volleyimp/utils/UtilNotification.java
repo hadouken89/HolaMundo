@@ -1,9 +1,7 @@
 package proyecto.jonas.volleyimp.utils;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -11,7 +9,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import proyecto.jonas.volleyimp.R;
-import proyecto.jonas.volleyimp.activities.MainActivity;
 
 public class UtilNotification {
     public static void sendNotification(Context context, String notificationTitle, String notificationMessage){

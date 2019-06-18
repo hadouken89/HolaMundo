@@ -2,7 +2,6 @@ package proyecto.jonas.volleyimp.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -22,7 +21,7 @@ public class NotificacionesService extends Service {
     private Timer mTimer;
     private HashMap mHmMonedaResponse;
     private ArrayList<Moneda> monedaList = new ArrayList<Moneda>();
-    private HashMap<String, Moneda> hmMonedas = new HashMap<>();
+    private static HashMap<String, Moneda> hmMonedas = new HashMap<>();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -42,7 +41,7 @@ public class NotificacionesService extends Service {
         Log.d("dolar-app", "onStartCommand "+ monedaList.toString());
         initProperties(intent);
         startTimer();
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     TimerTask timerTask = new TimerTask() {
@@ -54,6 +53,7 @@ public class NotificacionesService extends Service {
 
     private void toastTest() {
         Log.d("dolar-app","MENSAJE DE PRUEBA");
+        Log.d("dolar-app","hmMonedas: "+ hmMonedas.toString() + "- size:" + hmMonedas.size());
     }
 
     private void notifyServiceActions() {
@@ -98,27 +98,38 @@ public class NotificacionesService extends Service {
     }
 
     private void initProperties(Intent intent) {
+        try{
             hmMonedas =(HashMap<String, Moneda>) intent.getSerializableExtra(MonedasConstant.MONEDA_LIST);
+        }catch (Exception e){
+            Log.d("dolar-app,","failed initPropertiesonStartCommand: ",e);
+            e.printStackTrace();
+            callBradCastService();
+            stoptimertask();
+        }
+
     }
 
     @Override
     public void onDestroy() {
         try{
             Log.d("dolar-app", "Notificacionesservice.class call ondestroy!");
-       // si la app no se esta ejecutando en primer plano
-           Intent broadcastIntent =  new Intent(getApplicationContext(), BroadcastServiceReceiver.class);
-           broadcastIntent.putExtra("holis", "holis");
-           broadcastIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedas);
-
-           sendBroadcast(broadcastIntent);
-
-           stoptimertask();
+            // si la app no se esta ejecutando en primer plano
+            stoptimertask();
+            callBradCastService();
 
         }catch (Exception e){
             Log.d("dolar-app", "Notificacionesservice.class onDestroy error ", e);
-            String holis = "";
+            e.printStackTrace();
         }
         super.onDestroy();
+    }
+
+    private void callBradCastService() {
+        Intent broadcastIntent =  new Intent(getApplicationContext(), BroadcastServiceReceiver.class);
+        broadcastIntent.putExtra("holis", "holis");
+        broadcastIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedas);
+
+        sendBroadcast(broadcastIntent);
     }
 
     private void stoptimertask() {
@@ -128,4 +139,14 @@ public class NotificacionesService extends Service {
         }
     }
 
+    public static  HashMap<String, Moneda> getHmMonedas() {
+        return hmMonedas;
+    }
+
+    public static void addMonedaToHmQueue (Moneda moneda) {
+        if(hmMonedas == null){
+            hmMonedas = new HashMap();
+        }
+        hmMonedas.put(moneda.getMonedaName(), moneda);
+    }
 }

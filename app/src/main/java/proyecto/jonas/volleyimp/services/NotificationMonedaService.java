@@ -2,7 +2,6 @@ package proyecto.jonas.volleyimp.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -112,4 +111,6 @@ public class NotificationMonedaService extends Service {
             String holis = "";
         }
     }
+
+
 }

@@ -12,25 +12,26 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import java.util.ArrayList;
+
 import java.util.HashMap;
+
 import proyecto.jonas.volleyimp.R;
 import proyecto.jonas.volleyimp.activities.MonedaNotification;
 import proyecto.jonas.volleyimp.adapters.MonedasAdapter;
+import proyecto.jonas.volleyimp.broadcast.BroadcastServiceReceiver;
 import proyecto.jonas.volleyimp.constants.MonedasConstant;
 import proyecto.jonas.volleyimp.models.Moneda;
 import proyecto.jonas.volleyimp.services.BilletesService;
 import proyecto.jonas.volleyimp.services.IVolleyCallback;
 import proyecto.jonas.volleyimp.services.NotificacionesService;
-import proyecto.jonas.volleyimp.utils.Utils;
 
 public class BilletesFragment extends Fragment {
 
     private ListView lvBilletes;
     private View mView;
-    private HashMap mHmMonedas;
     private Intent mIntent ;
-    private ArrayList<Moneda> monedaList = new ArrayList<Moneda>();
+    private HashMap mHmMonedas;
+    private HashMap hmMonedasInQueue;
     private HashMap<String, Moneda> hmMonedas = new HashMap<>();
 
     public BilletesFragment() { }
@@ -46,8 +47,9 @@ public class BilletesFragment extends Fragment {
 
     private void initProperties(View view) {
         lvBilletes = view.findViewById(R.id.lvBilletes);
+        hmMonedasInQueue = NotificacionesService.getHmMonedas();
 
-        mView = view;
+        this.mView = view;
         showDivisas();
     }
 
@@ -79,7 +81,7 @@ public class BilletesFragment extends Fragment {
            @Override
            public void onFailure(Exception e) {
                Log.d("dolar-app", "BilletesFragment showDivisas OnFailure calling billetesService.class");
-               String holis = "";
+               e.printStackTrace();
            }
        });
        billetesService.callRequestData();
@@ -90,20 +92,52 @@ public class BilletesFragment extends Fragment {
        monedasAdapter.setmOnItemClickListener(new MonedasAdapter.OnItemClickListener() {
            @Override
            public void onItemClick(Moneda moneda) {
-              Intent myIntent = new Intent( getContext() , NotificacionesService.class);
-       //       if(isMyServiceRunning(NotificacionesService.class)){
-       //          getContext().stopService(mIntent);
-       //       }
-               hmMonedas.put(moneda.getMonedaName(), moneda);
-               myIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedas);
+              if(! isMonedaInNotificationQueue(moneda)){
+                addMonedaToNotificationList(moneda);
+                addMonedaToQueue(moneda);
+              }
 
-               getContext().startService(myIntent);
-               mIntent = myIntent;
            }
        });
        lvBilletes.setAdapter(monedasAdapter);
 
    }
+
+    private void addMonedaToQueue(Moneda moneda) {
+        if(!isMyServiceRunning(NotificacionesService.class)){
+            Log.d("dolar-app", "addMonedaToNotificationList: "+ moneda.getMonedaName() +" - " + moneda.toString() );
+            callBroadCastService();
+        }else {
+            NotificacionesService.addMonedaToHmQueue(moneda);
+        }
+    }
+
+    private void addMonedaToNotificationList(Moneda moneda) {
+        hmMonedasInQueue.put(moneda.getMonedaName(), moneda);
+    }
+
+    private void callBroadCastService() {
+        Intent broadcastIntent =  new Intent(getContext(), BroadcastServiceReceiver.class);
+        broadcastIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedasInQueue);
+
+        getContext().sendBroadcast(broadcastIntent);
+    }
+
+    private boolean isMonedaInNotificationQueue(Moneda moneda) {
+        HashMap hmMonedasInQueue = NotificacionesService.getHmMonedas();
+
+        if(hmMonedasInQueue != null) {
+            for (int i = 0; i < hmMonedasInQueue.size(); i++) {
+                Moneda monedaInQueue = (Moneda) hmMonedasInQueue.get(hmMonedasInQueue.keySet().toArray()[i]);
+                String monedaInQueueName = monedaInQueue.getMonedaName();
+                if (moneda.getMonedaName().equals(monedaInQueueName)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
@@ -113,7 +147,7 @@ public class BilletesFragment extends Fragment {
                 return true;
             }
         }
-        Log.i ("dolar-app", false+" isMyServiceRunning?");
+        Log.d ("dolar-app",false + " isMyServiceRunning?");
         return false;
     }
 
@@ -121,20 +155,31 @@ public class BilletesFragment extends Fragment {
        lvBilletes.setOnItemClickListener(new OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              Moneda monedaItem = (Moneda) mHmMonedas.get(mHmMonedas.keySet().toArray()[position]);
-              Intent myIntent = new Intent(getActivity(), MonedaNotification.class);
-              myIntent.putExtra(MonedasConstant.ITEM_MONEDA, monedaItem);
-              startActivity(myIntent);
+               Moneda monedaItem = getMonedaItem(mHmMonedas, position);
+               callMonedaNotification(monedaItem);
            }
        });
    }
 
-    @Override
-    public void onDestroy() {
+    private void callMonedaNotification(Moneda monedaItem) {
+        Intent myIntent = new Intent(getActivity(), MonedaNotification.class);
+        myIntent.putExtra(MonedasConstant.ITEM_MONEDA, monedaItem);
+        startActivity(myIntent);
+    }
+
+    private Moneda getMonedaItem(HashMap mHmMonedas, int position) {
+        return (Moneda) mHmMonedas.get(mHmMonedas.keySet().toArray()[position]);
+    }
+
+    private void stopNotificationService() {
         Intent myIntent = new Intent(getContext(), NotificacionesService.class);
         myIntent.putExtra(MonedasConstant.MONEDA_LIST, hmMonedas);
-
         getContext().stopService(myIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        stopNotificationService();
         Log.d("dolar-app", "BilletesFragment call OnDestroy and stop NotificacionesService.class");
         super.onDestroy();
     }
